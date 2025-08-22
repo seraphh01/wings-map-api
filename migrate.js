@@ -1,62 +1,9 @@
-const pool = require('./db');
-
-async function migrate() {
-  try {
-    // Users
-    await pool.query(`
-      CREATE TABLE IF NOT EXISTS users (
-        id SERIAL PRIMARY KEY,
-        email VARCHAR(255) UNIQUE NOT NULL,
-        password VARCHAR(255) NOT NULL,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      );
-    `);
-    // Products
-    await pool.query(`
-      CREATE TABLE IF NOT EXISTS products (
-        id SERIAL PRIMARY KEY,
-        name VARCHAR(255) NOT NULL,
-        description TEXT,
-        price NUMERIC(10,2) NOT NULL,
-        size VARCHAR(50),
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      );
-    `);
-    // Orders
-    await pool.query(`
-      CREATE TABLE IF NOT EXISTS orders (
-        id SERIAL PRIMARY KEY,
-        user_id INTEGER REFERENCES users(id),
-        guest_email VARCHAR(255),
-        shipping_address TEXT NOT NULL,
-        status VARCHAR(50) DEFAULT 'pending',
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      );
-    `);
-    // Order items
-    await pool.query(`
-      CREATE TABLE IF NOT EXISTS order_items (
-        id SERIAL PRIMARY KEY,
-        order_id INTEGER REFERENCES orders(id) ON DELETE CASCADE,
-        product_id INTEGER REFERENCES products(id),
-        quantity INTEGER NOT NULL
-      );
-    `);
-    console.log('Migration complete.');
-    process.exit(0);
-  } catch (err) {
-    console.error('Migration failed:', err);
-    process.exit(1);
-  }
-}
-
-migrate();
 const { execSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
 const MIGRATIONS_DIR = path.join(__dirname, 'migrations');
-const CONTAINER = 'wings-mag-db-1';
+const CONTAINER = 'wings-map-api-db-1';
 const DB_USER = 'wingsmag';
 const DB_NAME = 'wingsmag';
 

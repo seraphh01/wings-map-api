@@ -7,14 +7,14 @@ const router = express.Router();
 
 // Register
 router.post('/register', async (req, res) => {
-  const { email, password, isAdmin } = req.body;
+  const { email, password } = req.body;
   if (!email || !password) return res.status(400).json({ error: 'Email and password required' });
-  const is_admin = isAdmin === true || isAdmin === 'true';
+
   try {
     const hashed = await bcrypt.hash(password, 10);
     const result = await pool.query(
       'INSERT INTO users (email, password, is_admin) VALUES ($1, $2, $3) RETURNING id, email, is_admin',
-      [email, hashed, is_admin]
+      [email, hashed, false]
     );
     res.status(201).json(result.rows[0]);
   } catch (err) {

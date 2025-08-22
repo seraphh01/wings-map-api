@@ -104,17 +104,18 @@ router.get('/', async (req, res) => {
     }));
     res.json(withPhotos);
   } catch (err) {
-    res.status(500).json({ error: 'Failed to fetch products' });
+    console.log(err);
+    res.status(500).json({ error: 'Failed to fetch products' + err });
   }
 });
 
 // Add a product (admin only)
 router.post('/', authenticateToken, requireAdmin, async (req, res) => {
-  const { name, description, price, size, inventory } = req.body;
+  const { name, description, price, height, inventory, stability, portability, idealFor } = req.body;
   try {
     const result = await pool.query(
-      'INSERT INTO products (name, description, price, size, inventory) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-      [name, description, price, size, inventory || 0]
+      'INSERT INTO products (name, description, price, height, inventory, stability, portability, idealFor) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *',
+      [name, description, price, height, inventory || 0, stability || null, portability || null, idealFor || null]
     );
     res.status(201).json(result.rows[0]);
   } catch (err) {
@@ -125,11 +126,11 @@ router.post('/', authenticateToken, requireAdmin, async (req, res) => {
 // Update a product (admin only)
 router.put('/:id', authenticateToken, requireAdmin, async (req, res) => {
   const { id } = req.params;
-  const { name, description, price, size, inventory } = req.body;
+  const { name, description, price, height, inventory, stability, portability, idealFor } = req.body;
   try {
     const result = await pool.query(
-      'UPDATE products SET name=$1, description=$2, price=$3, size=$4, inventory=$5 WHERE id=$6 RETURNING *',
-      [name, description, price, size, inventory, id]
+      'UPDATE products SET name=$1, description=$2, price=$3, height=$4, inventory=$5, stability=$6, portability=$7, idealFor=$8 WHERE id=$9 RETURNING *',
+      [name, description, price, height, inventory, stability, portability, idealFor, id]
     );
     if (!result.rows.length) return res.status(404).json({ error: 'Product not found' });
     res.json(result.rows[0]);

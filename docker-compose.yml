@@ -1,0 +1,23 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:16
+    restart: always
+    environment:
+      POSTGRES_USER: wingsmag
+      POSTGRES_PASSWORD: wingsmagpass
+      POSTGRES_DB: wingsmag
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+  backend:
+    build: ./
+    env_file:
+      - ./.env
+    ports:
+      - "3001:3001"
+    depends_on:
+      - db
+volumes:
+  db_data:
