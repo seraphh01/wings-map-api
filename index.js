@@ -9,7 +9,12 @@ require('dotenv').config();
 
 
 
-app.use(cors());
+app.use(cors({
+  origin: '*', 
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+}));
 app.use(express.json());
 // Serve uploaded images
 app.use('/uploads', express.static(require('path').join(__dirname, 'uploads')));
