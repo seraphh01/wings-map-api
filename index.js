@@ -24,10 +24,14 @@ app.use('/api/products', require('./routes/products'));
 app.use('/api/orders', require('./routes/orders'));
 app.use('/api/analytics', require('./routes/analytics'));
 
+// Local server for development
 if (require.main === module) {
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
   });
 }
 
+// AWS Lambda handler
+const serverlessExpress = require('@vendia/serverless-express');
+exports.handler = serverlessExpress({ app });
 module.exports = app;

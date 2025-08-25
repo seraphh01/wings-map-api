@@ -1,8 +1,12 @@
-# Backend Dockerfile
-FROM node:20-alpine
-WORKDIR /app
+# AWS Lambda Node.js 18 base image
+FROM public.ecr.aws/lambda/nodejs:18
+
+# Copy package files and install dependencies
 COPY package*.json ./
 RUN npm install --production
+
+# Copy all source code
 COPY . .
-EXPOSE 3001
-CMD ["node", "index.js"]
+
+# Set the Lambda handler (index.handler)
+CMD ["index.handler"]
