@@ -19,7 +19,7 @@ jobs:
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            cd /home/ubuntu/wings-map-api
+            cd wings-map-api
             git pull origin main   # 👈 pull the latest changes
             sudo systemctl restart wingsapp
             sudo systemctl status wingsapp --no-pager -l
