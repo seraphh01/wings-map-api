@@ -20,6 +20,6 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             cd wings-map-api
-            git pull origin main   # 👈 pull the latest changes
+            sudo git pull origin main   # 👈 pull the latest changes
             sudo systemctl restart wingsmag
             sudo systemctl status wingsmag --no-pager -l
