@@ -30,4 +30,11 @@ UPDATE products SET
     WHEN 'Power Bars' THEN 'Sportivi care vor stabilitate maximă la antrenamentele grele'
     WHEN 'Pro Bars' THEN 'Sportivi avansați și antrenamente de forță statică'
     ELSE idealFor
+  price = CASE name
+    WHEN 'Travel Bars' THEN 149
+    WHEN 'Core Bars' THEN 199
+    WHEN 'Tri Bars' THEN 149
+    WHEN 'Power Bars' THEN 249
+    WHEN 'Pro Bars' THEN 299
+    ELSE price
   END;

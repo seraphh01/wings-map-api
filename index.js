@@ -21,7 +21,7 @@ app.use('/uploads', express.static(require('path').join(__dirname, 'uploads')));
 app.use(authenticateToken);
 
 app.get('/', (req, res) => {
-  res.send('Welcome to the WINGSMAG backend API!');
+  res.send('Welcome to the WINGSMAG backend API test!');
 });
 
 app.use('/api/auth', require('./routes/auth'));
