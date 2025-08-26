@@ -22,3 +22,4 @@ jobs:
             cd /home/ubuntu/wings-map-api
             git pull origin main   # 👈 pull the latest changes
             sudo systemctl restart wingsapp
+            sudo systemctl status wingsapp --no-pager -l
